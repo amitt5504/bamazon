@@ -32,7 +32,7 @@ function manage() {
                 "View Low Inventory",
                 "Add to Inventory",
                 "Add New Product",
-                "exit"
+                "Exit"
             ]
         }).then(function (answer) {
             switch (answer.action) {
@@ -52,7 +52,7 @@ function manage() {
                     addProduct();
                     break;
 
-                case "exit":
+                case "Exit":
                     connection.end();
                     break;
             }
