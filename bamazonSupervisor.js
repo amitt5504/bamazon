@@ -3,24 +3,22 @@ var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
-
     // Your port; if not 3306
     port: 3306,
-
     // Your username
     user: "root",
-
     // Your password
     password: "root",
     database: "bamazon_DB"
 });
 
+//connect to the DB and call the superVisor function
 connection.connect(function (err) {
     if (err) throw err;
-    // run the start function after the connection is made to prompt the user
     superVisor();
 });
 
+//function displays the prompt menu for the supervisor options
 function superVisor() {
     inquirer
         .prompt({
@@ -48,6 +46,8 @@ function superVisor() {
         });
 }
 
+//perform a join on the department and product tables to gather the necessary columns
+//departments are then grouped together (product sales amongst items in the same department are summed together)
 function departmentSales() {
     var query = "SELECT d.department_name, d.over_head_cost, d.department_id,"
     + " SUM(p.product_sales) AS product_sales ";
@@ -56,18 +56,19 @@ function departmentSales() {
 	query += "GROUP BY department_id ";
     connection.query(query, function(err, res) {
         if (err) throw err;
-        // console.log(res);
-        // console.log("---")
+
         for (var i = 0; i < res.length; i++) {
             var profit = parseInt(res[i].product_sales) - parseInt(res[i].over_head_cost);
-            console.log("Department #: " + res[i].department_id + " || Department: " + res[i].department_name + " || Overhead Cost: " + res[i].over_head_cost + " || Product Sales: " + res[i].product_sales + " || Total Profit: " + profit);
+            console.log("Department #: " + res[i].department_id + " || Department: " + res[i].department_name + " || Overhead Cost: $" + res[i].over_head_cost + " || Product Sales: $" + res[i].product_sales + " || Total Profit: $" + profit);
             console.log("---")
         }
+        //call the supervisor menu function
         superVisor();
     });
 
 }
 
+//adds a new department
 function newDepartment() {
     inquirer.prompt([{
         name: "department",
@@ -75,7 +76,7 @@ function newDepartment() {
         message: "Name of the new Department"
     },
     {
-        name: "overhead",
+        name: "over_head_cost",
         type: "input",
         message: "What is the over head cost for the Department"
     }]).then(function (answer) {
@@ -87,7 +88,7 @@ function newDepartment() {
         function(err) {
             if (err) throw err;
             console.log("New Department successfully added");
-            // re-prompt the user for if they want to bid or post
+            //call the supervisor menu function
             superVisor();
         });   
     });
