@@ -4,7 +4,7 @@ BAamzon is a mock version of Amazon that can be used by customers to purchase pr
 
 BAmazon Customer
 
-When running the `bamazonCustomer.js` file, the customer is displayed the options to either view the products for sale or exit.
+When running the `bamazonCustomer.js` file, the customer is displayed the options to either view the products for sale or exit. 
 !["customer-menu"](https://i.imgur.com/wPsMV2g.png)
 
 If you select view items, the available items will display. 
